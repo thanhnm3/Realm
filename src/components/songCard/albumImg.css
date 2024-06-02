@@ -1,0 +1,24 @@
+/*=================== This is album img ==============*/
+
+.albumImage {
+  display: flex;
+  width: 70%;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  z-index: 1;
+}
+
+.albumImage img {
+  width: 100%;
+  border-radius: 10px;
+  aspect-ratio: 1;
+}
+
+.albumImage-shadow {
+  filter: blur(18.5px);
+  width: 90%;
+  position: relative;
+  z-index: -1;
+  top: 50px;
+}

@@ -1,0 +1,120 @@
+.music-search-container {
+  display: flex;
+  align-items: center;
+  border: 1px solid #ccc;
+  padding: 5px;
+  border-radius: 5px;
+  width: 80%; /* Set a fixed width for the search container */
+  margin: auto; /* Remove the vertical margin */
+  margin-top: 20px;
+  padding: 10px;
+  input {
+    border: none;
+    flex-grow: 1;
+    padding: 5px;
+    font-size: 16px; /* Increase the font size */
+    color: black;
+  }
+  svg {
+    color: #ccc;
+    margin-left: 10px; /* Add some space between the input and the icon */
+  }
+}
+
+.feed-search-body {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  row-gap: 2%;
+
+  .header-song-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 0.2fr;
+    width: 80%;
+  }
+
+  .search-music-result {
+    padding: 5px;
+    height: 500px;
+    width: 80%;
+    overflow-y: scroll;
+    .track-container {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr 0.2fr;
+      justify-items: flex-start;
+      padding: 10px;
+      box-sizing: border-box;
+      img {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        margin-right: 10px;
+      }
+
+      .track-name {
+        display: flex;
+        font-size: 16px;
+        font-weight: 600;
+        color: white;
+      }
+      .track-artist {
+        font-size: 14px;
+        color: #ccc;
+      }
+    }
+  }
+}
+
+.recommend-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 500px;
+  text-align: left;
+  align-items: center;
+
+  .recommend-tittle {
+    font-weight: 600;
+    color: white;
+  }
+
+  .recommend-box {
+    display: flex;
+    flex-direction: row;
+    height: 300px;
+    width: 1200px;
+    max-width: none;
+    overflow-x: scroll;
+    box-sizing: border-box;
+    gap: 20px;
+    background: rgba(255, 255, 255, 0);
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    border-radius: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    img {
+      width: 100px;
+      height: 100px;
+      border-radius: 5%;
+    }
+    .recommend-track-container {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      cursor: pointer;
+      width: 100%;
+      max-width: none;
+      gap: 3%;
+      padding-left: 40px;
+      padding-right: 40px;
+      background: rgba(255, 255, 255, 0);
+      box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+      backdrop-filter: blur(5px);
+      -webkit-backdrop-filter: blur(5px);
+      border-radius: 10px;
+      border: 1px solid rgba(255, 255, 255, 0.18);
+    }
+  }
+}

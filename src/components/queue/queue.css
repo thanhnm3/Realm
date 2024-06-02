@@ -1,0 +1,93 @@
+.queue-container {
+  width: 100%;
+  height: 100%;
+  background: rgba(27, 35, 66, 0.6);
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
+  border-radius: 5px;
+  text-align: start;
+}
+
+.queue {
+  margin-left: 10%;
+  height: 85%;
+  width: 80%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+.upNext {
+  font-size: 20px;
+  font-weight: 400;
+  text-align: left;
+  margin: 0;
+  align-self: flex-start;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+}
+
+.queue-list {
+  height: 80%;
+  width: 100%;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.track-name {
+  width: 75%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  position: relative;
+}
+
+.track-name:hover {
+  animation: marquee 5s linear infinite;
+}
+
+@keyframes marquee {
+  0% {
+    text-indent: 0%;
+  }
+  100% {
+    text-indent: -30%;
+  }
+}
+
+.queue-items p {
+  margin: 0px;
+  margin-right: 5px;
+}
+.queue-items {
+  justify-content: space-between;
+  width: 100%;
+  display: flex;
+  padding: 4px 0px;
+  font-size: 16px;
+  font-weight: 400;
+  cursor: pointer;
+}
+
+/*=================== Change properties of scroll bar =======================*/
+
+::-webkit-scrollbar {
+  width: 12px; /* Width of the scrollbar */
+}
+
+::-webkit-scrollbar-track {
+  background: #34495e; /* Color of the track */
+}
+
+::-webkit-scrollbar-thumb {
+  background: #888; /* Color of the scroll thumb */
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #555; /* Color of the scroll thumb on hover */
+}

@@ -1,0 +1,113 @@
+.youtube-search-container {
+  display: flex;
+  align-items: center;
+  border: 1px solid #ccc;
+  padding: 5px;
+  border-radius: 5px;
+  width: 80%; /* Set a fixed width for the search container */
+  margin: auto; /* Remove the vertical margin */
+  margin-top: 20px;
+  padding: 10px;
+}
+
+.youtube-search-container input {
+  border: none;
+  flex-grow: 1;
+  padding: 5px;
+  font-size: 16px; /* Increase the font size */
+  color: black;
+}
+
+.youtube-search-container svg {
+  color: #ccc;
+  margin-left: 10px; /* Add some space between the input and the icon */
+}
+
+.search-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #96a4dc; /* Change the background color */
+  color: white; /* Change the text color */
+  border-radius: 5px; /* Round the corners */
+  padding: 5px 10px; /* Add some padding */
+  margin-left: 10px; /* Add some space to the left */
+  cursor: pointer; /* Change the cursor when hovering over the button */
+}
+
+.search-button p {
+  margin: 0; /* Remove the default margin */
+  margin-right: 5px; /* Add some space to the right of the text */
+}
+
+.search-button svg {
+  color: white; /* Change the icon color */
+}
+
+/* This is for search result  */
+.list-search-result {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  margin-top: 5px;
+  overflow-y: scroll;
+  position: fixed; /* Fix the position */
+  top: 20%;
+  height: 700px;
+}
+
+.search-result {
+  display: flex;
+  margin: 10px 0;
+  width: 80%;
+  height: auto;
+  align-items: center;
+  cursor: pointer;
+
+  background: rgba(255, 255, 255, 0.25);
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+}
+
+.left-body {
+  flex: 0.5;
+  border-right: 1px solid #ccc; /* Add a border to the right */
+}
+
+.right-body {
+  flex: 1;
+  padding: 20px;
+}
+
+.right-body .title {
+  font-size: 20px;
+  font-weight: bold; /* Make the title bold */
+}
+
+.right-body .created,
+.right-body .author,
+.right-body .description {
+  margin-top: 10px; /* Add some space at the top */
+}
+
+.search-result-big {
+  margin: 5%;
+  display: flex;
+  background-color: rgba(255, 255, 255, 0.5);
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.57);
+
+  .left-body {
+    flex: 1;
+    border-right: 1px solid #ccc;
+    height: 450px;
+  }
+
+  .right-body {
+    flex: 0.2;
+    padding: 20px;
+  }
+}

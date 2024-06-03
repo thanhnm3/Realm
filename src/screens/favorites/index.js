@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import "./favorites.css";
-
 import spotifyApi from "../../Auth";
+
+import { useNavigate } from "react-router-dom";
 
 import { AiFillClockCircle } from "react-icons/ai";
 import { FaHeartCircleXmark } from "react-icons/fa6";
@@ -9,6 +10,7 @@ import { GiHearts } from "react-icons/gi";
 import { FaMusic } from "react-icons/fa";
 
 const Favorites = () => {
+  //===================== Get favorite songs data ====================================
   const [tracks, setTracks] = useState([]);
 
   useEffect(() => {
@@ -22,6 +24,14 @@ const Favorites = () => {
         console.error("Error getting Tracks:", error);
       });
   }, []);
+
+  //=========================== Play favorite track ===================================
+
+  const navigate = useNavigate();
+  const playTrack = (trackid) => {
+    navigate("/player", { state: { trackId: trackid } });
+    console.log("Track", trackid);
+  };
 
   return (
     <div className="screen-container">
@@ -59,9 +69,14 @@ const Favorites = () => {
               const artist = track.track.album.artists
                 .map((artist) => artist.name)
                 .join(", ");
-
               return (
-                <div className="row" key={index}>
+                <div
+                  className="row"
+                  key={index}
+                  onClick={() => {
+                    playTrack(track.track.id);
+                  }}
+                >
                   <div className="col">
                     <span>{index + 1}</span>
                   </div>

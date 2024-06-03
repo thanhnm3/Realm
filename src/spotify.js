@@ -20,7 +20,7 @@ const scopes = [
   "playlist-modify-public",
 ];
 
-if (window.location.origin + window.location.pathname === redirectUri) {
+if (window.location.origin + window.location.pathname != redirectUri2) {
   loginEndpoint = `${authEndpoint}client_id=${clientId}&redirect_uri=${redirectUri}&scope=${scopes.join(
     "%20"
   )}&response_type=token&show_dialog=true`;

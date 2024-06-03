@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { FaSearch } from "react-icons/fa";
 import spotifyApi from "../../Auth";
 import "./feed.css";
+import { useNavigate } from "react-router-dom";
 
 import { AiFillClockCircle } from "react-icons/ai";
 
@@ -41,6 +42,7 @@ const Feed = () => {
     try {
       const result = await spotifyApi.getNewReleases({ limit: 10 });
       setNewReleases(result.albums.items);
+      console.log(result);
     } catch (error) {
       console.error("Error occurred while fetching new releases:", error);
     }
@@ -65,7 +67,13 @@ const Feed = () => {
   useEffect(() => {
     getTopTracks();
   }, []);
-  console.log(topTracks);
+
+  //======================= Play track and jump to /player ==========================================
+
+  const navigate = useNavigate();
+  const playTrack = (trackid) => {
+    navigate("/player", { state: { trackId: trackid } });
+  };
 
   return (
     <div className="screen-container flex">
@@ -107,7 +115,14 @@ const Feed = () => {
           </div>
           <div className="search-music-result">
             {searchResults.map((track, index) => (
-              <div key={index} className="track-container">
+              <div
+                key={index}
+                className="track-container"
+                onClick={() => {
+                  playTrack(track.id);
+                  console.log("This is search  ", track.id);
+                }}
+              >
                 <div className="track-name">
                   <img src={track.album.images[0].url} alt="album-cover" />
                   <p>{track.name}</p>
@@ -125,7 +140,14 @@ const Feed = () => {
           <p className="recommend-tittle">New Releases</p>
           <div className="recommend-box">
             {newReleases.map((track, index) => (
-              <div key={index} className="recommend-track-container">
+              <div
+                key={index}
+                className="recommend-track-container"
+                onClick={() => {
+                  // playTrack(track.id);
+                  console.log("This is new release", track);
+                }}
+              >
                 <div className="recommend-track-cover">
                   <img src={track.images[0].url} alt="recommend-track-cover" />
                 </div>
@@ -142,7 +164,14 @@ const Feed = () => {
           <p className="recommend-tittle">Recommend for you</p>
           <div className="recommend-box">
             {topTracks?.map((track, index) => (
-              <div key={index} className="recommend-track-container">
+              <div
+                key={index}
+                className="recommend-track-container"
+                onClick={() => {
+                  console.log("THis is track id for recommend", track.id);
+                  playTrack(track.id);
+                }}
+              >
                 <div className="recommend-track-cover">
                   <img
                     src={track?.album.images?.[0]?.url}

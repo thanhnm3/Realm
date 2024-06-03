@@ -3,6 +3,7 @@ import "./audioPlayer.css";
 import ProgressCircle from "./progressCircle";
 import WaveAnimation from "./waveAnimation";
 import Controls from "./controls";
+import { SpotifyApi } from "../../Auth";
 
 export default function AudioPlayer({
   currentTrack,

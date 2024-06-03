@@ -11,6 +11,7 @@ import { FiLogOut } from "react-icons/fi";
 import { MdOndemandVideo } from "react-icons/md";
 import apiClient from "../../spotify";
 import SpotifyWebApi from "spotify-web-api-js";
+import SpotifyPlayer from "../../spotifyPlayer";
 
 export default function Sidebar() {
   // This is the initialize function to access the token from localStorage and set it to the spotifyApi
@@ -60,7 +61,7 @@ export default function Sidebar() {
         />
         <SidebarButton title="Library" to="/" icon={<IoLibraryOutline />} />
       </div>
-
+      <SpotifyPlayer token={token} className="btn-icon" />
       <SidebarButton
         title="Sign out"
         to=""

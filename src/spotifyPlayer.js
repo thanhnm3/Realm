@@ -1,6 +1,7 @@
 // src/SpotifyPlayer.js
 import React, { useEffect, useState } from "react";
-import SpotifyWebApi from "spotify-web-api-js";
+import spotifyApi from "./Auth";
+import { MdDevices } from "react-icons/md";
 
 const SpotifyPlayer = ({ token }) => {
   const [player, setPlayer] = useState(null);
@@ -32,19 +33,45 @@ const SpotifyPlayer = ({ token }) => {
 
       player.connect();
     };
+    getAvailableDevices();
   }, [token]);
 
-  const handlePlay = () => {
-    if (player) {
-      player.togglePlay();
-    } else {
-      console.log("Player is not ready");
+  //======================= Get Available Devices ==============================
+  const [devices, setDevices] = useState([]);
+
+  const getAvailableDevices = async () => {
+    try {
+      const result = await spotifyApi.getMyDevices();
+      setDevices(result.devices);
+      console.log(result);
+    } catch (error) {
+      console.error("Error occurred while fetching devices:", error);
+    }
+  };
+
+  const transferPlaybackToDevice = async (deviceId) => {
+    try {
+      await spotifyApi.transferMyPlayback([deviceId]);
+    } catch (error) {
+      console.error("Error occurred while transferring playback:", error);
     }
   };
 
   return (
     <div>
-      <button onClick={handlePlay}>Play/Pause</button>
+      {devices.slice(0, 2).map((device) => (
+        <div
+          key={device.id}
+          onClick={() => {
+            transferPlaybackToDevice(device.id);
+          }}
+        >
+          <MdDevices />
+          {device.name.length > 5
+            ? device.name.substring(0, 5) + "..."
+            : device.name}
+        </div>
+      ))}
     </div>
   );
 };

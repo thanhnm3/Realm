@@ -4,8 +4,6 @@ import "./queue.css";
 import { MdLibraryMusic } from "react-icons/md";
 
 export default function Queue({ tracks, setCurrentTrackIndex }) {
-  console.log(tracks);
-
   function formatDuration(duration_ms) {
     let minutes = Math.floor(duration_ms / 60000);
     let seconds = ((duration_ms % 60000) / 1000).toFixed(0);

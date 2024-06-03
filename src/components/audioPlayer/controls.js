@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import "./controls.css";
 import { FaPlay, FaPause, FaStepForward, FaStepBackward } from "react-icons/fa";
 import { IconContext } from "react-icons";
+import spotifyApi from "../../Auth";
 
 export default function Controls({
   isPlaying,
@@ -9,6 +10,8 @@ export default function Controls({
   handleNext,
   handlePrev,
 }) {
+  //======================= Function handle play track ==========================================
+
   const handlePlayPause = () => {
     setIsPlaying(!isPlaying);
   };
@@ -30,6 +33,7 @@ export default function Controls({
     };
   }, [isPlaying]);
 
+  //================================================================================================
   return (
     <IconContext.Provider value={{ size: "30px", color: "#3498db" }}>
       <div className="controls-wrapper">

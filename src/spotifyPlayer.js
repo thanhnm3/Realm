@@ -4,6 +4,7 @@ import spotifyApi from "./Auth";
 import { MdDevices } from "react-icons/md";
 
 const SpotifyPlayer = ({ token }) => {
+  //======================= Spotify Player ==============================
   const [player, setPlayer] = useState(null);
 
   useEffect(() => {
@@ -25,6 +26,7 @@ const SpotifyPlayer = ({ token }) => {
 
       player.addListener("ready", ({ device_id }) => {
         console.log("Ready with Device ID", device_id);
+        getAvailableDevices();
       });
 
       player.addListener("not_ready", ({ device_id }) => {
@@ -33,7 +35,6 @@ const SpotifyPlayer = ({ token }) => {
 
       player.connect();
     };
-    getAvailableDevices();
   }, [token]);
 
   //======================= Get Available Devices ==============================

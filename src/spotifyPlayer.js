@@ -27,6 +27,7 @@ const SpotifyPlayer = ({ token }) => {
       player.addListener("ready", ({ device_id }) => {
         console.log("Ready with Device ID", device_id);
         getAvailableDevices();
+        transferPlaybackToDevice(device_id);
       });
 
       player.addListener("not_ready", ({ device_id }) => {
@@ -52,7 +53,7 @@ const SpotifyPlayer = ({ token }) => {
 
   const transferPlaybackToDevice = async (deviceId) => {
     try {
-      await spotifyApi.transferMyPlayback([deviceId]);
+      await spotifyApi.transferMyPlayback([deviceId], { play: true });
     } catch (error) {
       console.error("Error occurred while transferring playback:", error);
     }

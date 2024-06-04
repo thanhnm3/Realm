@@ -1,9 +1,9 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import "./audioPlayer.css";
 import ProgressCircle from "./progressCircle";
 import WaveAnimation from "./waveAnimation";
 import Controls from "./controls";
-import { SpotifyApi } from "../../Auth";
+import spotifyApi from "../../Auth";
 
 export default function AudioPlayer({
   currentTrack,
@@ -13,6 +13,48 @@ export default function AudioPlayer({
 }) {
   const [isPlaying, setIsPlaying] = useState(true);
   const [trackProgress, setTrackProgress] = useState(0);
+
+  const getTrackProgress = async () => {
+    try {
+      const result = await spotifyApi.getMyCurrentPlaybackState();
+      setTrackProgress(result.progress_ms);
+    } catch (error) {
+      console.error("Error occurred while fetching track progress:", error);
+    }
+  };
+
+  //======================= Auto get the real time play track ========================//
+  useEffect(() => {
+    const interval = setInterval(() => {
+      getTrackProgress();
+    }, 1000); // Update every second
+
+    // Clear interval on component unmount
+    return () => {
+      clearInterval(interval);
+    };
+  }, []);
+  const currentPercentage = currentTrack?.duration_ms
+    ? (trackProgress / currentTrack?.duration_ms) * 100
+    : 0;
+
+  useEffect(() => {
+    const setPlayStatus = async () => {
+      try {
+        if (isPlaying) {
+          await spotifyApi.play();
+        } else {
+          await spotifyApi.pause();
+        }
+      } catch (error) {
+        console.error("Error occurred while setting play status:", error);
+      }
+    };
+
+    setPlayStatus();
+  }, [isPlaying]);
+
+  /* 
   var audioSrc = total[currentTrackIndex]?.track.preview_url;
 
   const audioRef = useRef(new Audio(total[0]?.track.preview_url));
@@ -23,7 +65,7 @@ export default function AudioPlayer({
 
   const { duration } = audioRef.current;
 
-  const currentPercentage = duration ? (trackProgress / duration) * 100 : 0;
+
 
   const startTimer = () => {
     clearInterval(intervalRef.current);
@@ -96,27 +138,41 @@ export default function AudioPlayer({
       audioRef.current.pause();
       clearInterval(intervalRef.current);
     };
-  }, []);
+  }, []); */
 
-  const handleNext = () => {
-    if (currentTrackIndex >= total.length - 1) {
-      setCurrentTrackIndex(0);
-    } else {
-      setCurrentTrackIndex(currentTrackIndex + 1);
-    }
+  //=============================== handle Next and Previous track ==============================//
+  const handleNext = async () => {
+    let nextTrackIndex =
+      currentTrackIndex >= total.length - 1 ? 0 : currentTrackIndex + 1;
+    setCurrentTrackIndex(nextTrackIndex);
+    let nextTrack = total[nextTrackIndex];
+    console.log("This is next track ", nextTrack);
+    await spotifyApi.play({ uris: [nextTrack.track.uri] });
+    setIsPlaying(true);
   };
 
-  const handlePrev = () => {
-    if (currentTrackIndex - 1 < 0) {
-      setCurrentTrackIndex(total.length - 1);
-    } else {
-      setCurrentTrackIndex(currentTrackIndex - 1);
-    }
+  const handlePrev = async () => {
+    let prevTrackIndex =
+      currentTrackIndex - 1 < 0 ? total.length - 1 : currentTrackIndex - 1;
+    setCurrentTrackIndex(prevTrackIndex);
+    let prevTrack = total[prevTrackIndex];
+    await spotifyApi.play({ uris: [prevTrack.track.uri] });
   };
 
-  const addZeros = (num) => {
-    return num > 9 ? "" + num : "0" + num;
-  };
+  //=============================== Play track when current track index changes ==============================//
+  useEffect(() => {
+    const playTrack = async () => {
+      try {
+        let track = total[currentTrackIndex];
+        await spotifyApi.play({ uris: [track.track.uri] });
+      } catch (error) {
+        console.error("Error occurred while playing track:", error);
+      }
+    };
+
+    playTrack();
+    setIsPlaying(true);
+  }, [currentTrackIndex]);
 
   //===================== Get artist names ================================//
 
@@ -150,7 +206,7 @@ export default function AudioPlayer({
         <p className="song-artist">{artistNames}</p>
         <div className="player-right-bottom">
           <div className="song-duration">
-            <p className="duration">0:{addZeros(Math.round(trackProgress))}</p>
+            <p className="duration">{msToTime(trackProgress)}</p>
             <WaveAnimation isPlaying={isPlaying} />
             <p className="duration"> {msToTime(currentTrack?.duration_ms)}</p>
           </div>

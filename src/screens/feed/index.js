@@ -71,6 +71,7 @@ const Feed = () => {
   const navigate = useNavigate();
   const playTrack = (trackid) => {
     navigate("/player", { state: { trackId: trackid } });
+    console.log("Track", trackid);
   };
 
   return (

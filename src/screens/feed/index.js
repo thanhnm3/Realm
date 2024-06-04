@@ -35,23 +35,21 @@ const Feed = () => {
   };
 
   //======================= New Songs ==============================
+  const [playlistTracks, setPlaylistTracks] = useState([]);
 
-  const [newReleases, setNewReleases] = useState([]);
-
-  const getNewReleases = async () => {
+  const getPlaylistTracks = async (playlistId) => {
     try {
-      const result = await spotifyApi.getNewReleases({ limit: 10 });
-      setNewReleases(result.albums.items);
-      console.log(result);
+      const result = await spotifyApi.getPlaylistTracks(playlistId);
+      setPlaylistTracks(result.items);
     } catch (error) {
-      console.error("Error occurred while fetching new releases:", error);
+      console.error("Error occurred while fetching playlist tracks:", error);
     }
   };
 
   useEffect(() => {
-    getNewReleases();
+    getPlaylistTracks("37i9dQZF1DX0F4i7Q9pshJ");
   }, []);
-
+  console.log("This is playlist tracks hot hits vietnam ", playlistTracks);
   //======================= Get recommend for you ==============================
 
   const [topTracks, setTopTracks] = useState([]);
@@ -137,25 +135,28 @@ const Feed = () => {
         </div>
       ) : (
         <div className="recommend-container">
-          <p className="recommend-tittle">New Releases</p>
+          <p className="recommend-tittle">Hot Hits VietNam</p>
           <div className="recommend-box">
-            {newReleases.map((track, index) => (
+            {playlistTracks.map((track, index) => (
               <div
                 key={index}
                 className="recommend-track-container"
                 onClick={() => {
-                  // playTrack(track.id);
-                  console.log("This is new release", track);
+                  playTrack(track.track.id);
+                  console.log("This is hot hits vietnam", track.track.id);
                 }}
               >
                 <div className="recommend-track-cover">
-                  <img src={track.images[0].url} alt="recommend-track-cover" />
+                  <img
+                    src={track?.track?.album?.images?.[0]?.url}
+                    alt="recommend-track-cover"
+                  />
                 </div>
                 <div className="recommend-track-info">
-                  <p>Song: {track.name}</p>
+                  <p>Song: {track?.track?.name}</p>
                   <p className="recommend-track-artist">
                     Artists:
-                    {track.artists[0].name}
+                    {track?.track?.artists?.[0]?.name}
                   </p>
                 </div>
               </div>

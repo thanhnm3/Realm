@@ -13,7 +13,7 @@ const Favorites = () => {
   //===================== Get favorite songs data ====================================
   const [tracks, setTracks] = useState([]);
 
-  useEffect(() => {
+  const getFavoriteTracks = () => {
     spotifyApi
       .getMySavedTracks()
       .then((response) => {
@@ -23,7 +23,25 @@ const Favorites = () => {
       .catch((error) => {
         console.error("Error getting Tracks:", error);
       });
+  };
+
+  useEffect(() => {
+    getFavoriteTracks();
   }, []);
+
+  //============================= Remove track from favorite ============================
+
+  const removeFromFavorites = async (event, trackId) => {
+    event.stopPropagation();
+    try {
+      await spotifyApi.removeFromMySavedTracks([trackId]);
+      // Update the tracks state to reflect the change
+      setTracks(tracks.filter((track) => track.id !== trackId));
+      getFavoriteTracks();
+    } catch (error) {
+      console.error("Error removing track from favorites:", error);
+    }
+  };
 
   //=========================== Play favorite track ===================================
 
@@ -101,7 +119,11 @@ const Favorites = () => {
                     </span>
                   </div>
                   <div className="col icon">
-                    <FaHeartCircleXmark />
+                    <FaHeartCircleXmark
+                      onClick={(event) => {
+                        removeFromFavorites(event, track.track.id);
+                      }}
+                    />
                   </div>
                 </div>
               );

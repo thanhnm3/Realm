@@ -5,6 +5,7 @@ import "./feed.css";
 import { useNavigate } from "react-router-dom";
 
 import { AiFillClockCircle } from "react-icons/ai";
+import { FaHeartCirclePlus } from "react-icons/fa6";
 
 const Feed = () => {
   //======================= Search Functionality ========================
@@ -34,6 +35,18 @@ const Feed = () => {
     }
   };
 
+  //======================= Add track to favorite ========================
+
+  const addToFavorites = async (event, trackId) => {
+    event.stopPropagation();
+    try {
+      await spotifyApi.addToMySavedTracks([trackId]);
+      console.log("Track was added to favorites successfully.");
+    } catch (error) {
+      console.error("Error adding track to favorites:", error);
+    }
+  };
+
   //======================= New Songs ==============================
   const [playlistTracks, setPlaylistTracks] = useState([]);
 
@@ -52,7 +65,33 @@ const Feed = () => {
   console.log("This is playlist tracks hot hits vietnam ", playlistTracks);
   //======================= Get recommend for you ==============================
 
-  const [topTracks, setTopTracks] = useState([]);
+  const [recommendedTracks, setRecommendedTracks] = useState([]);
+
+  const getRecommendedTracks = async () => {
+    try {
+      // Get the recently played tracks
+      const recentlyPlayed = await spotifyApi.getMyRecentlyPlayedTracks({
+        limit: 2,
+      });
+
+      // Extract the track IDs to use as seeds
+      const seedTracks = recentlyPlayed.items.map((item) => item.track.id);
+
+      const result = await spotifyApi.getRecommendations({
+        seed_tracks: seedTracks,
+        limit: 20,
+      });
+      setRecommendedTracks(result.tracks);
+    } catch (error) {
+      console.error("Error occurred while fetching recommended tracks:", error);
+    }
+  };
+
+  useEffect(() => {
+    getRecommendedTracks();
+  }, []);
+
+  /*   const [topTracks, setTopTracks] = useState([]);
 
   const getTopTracks = async () => {
     try {
@@ -64,7 +103,7 @@ const Feed = () => {
   };
   useEffect(() => {
     getTopTracks();
-  }, []);
+  }, []); */
 
   //======================= Play track and jump to /player ==========================================
 
@@ -111,6 +150,9 @@ const Feed = () => {
             <div className="col icon ">
               <AiFillClockCircle />
             </div>
+            <div className="col icon ">
+              <FaHeartCirclePlus />
+            </div>
           </div>
           <div className="search-music-result">
             {searchResults.map((track, index) => (
@@ -130,6 +172,12 @@ const Feed = () => {
                 <p className="track-artist">{track.artists[0].name}</p>
                 <p className="track-album">{track.album.name}</p>
                 <p className="track-duration">{msToTime(track.duration_ms)} </p>
+                <div
+                  className="col icon "
+                  onClick={(event) => addToFavorites(event, track.id)}
+                >
+                  <FaHeartCirclePlus />
+                </div>
               </div>
             ))}
           </div>
@@ -165,7 +213,7 @@ const Feed = () => {
           </div>
           <p className="recommend-tittle">Recommend for you</p>
           <div className="recommend-box">
-            {topTracks?.map((track, index) => (
+            {recommendedTracks?.map((track, index) => (
               <div
                 key={index}
                 className="recommend-track-container"

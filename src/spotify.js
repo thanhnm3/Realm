@@ -10,6 +10,8 @@ let loginEndpoint;
 const scopes = [
   "user-library-read",
   "user-top-read",
+  "user-read-recently-played",
+  "user-library-modify",
   "playlist-read-private",
   "streaming",
   "user-read-currently-playing",
